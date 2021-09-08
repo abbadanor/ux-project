@@ -1,32 +1,64 @@
 <template>
-  <div id="app">
-    <div id="nav">
-      <router-link to="/">Home</router-link> |
-      <router-link to="/about">About</router-link>
-    </div>
+  <div class="app" vs-theme="dark">
+    <Navbar></Navbar>
     <router-view />
   </div>
 </template>
 
+<script>
+import Navbar from '@/components/Navbar.vue';
+
+export default {
+  name: 'App',
+  components: {
+    Navbar,
+  },
+};
+</script>
+
 <style lang="scss">
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
+@import url('https://fonts.googleapis.com/css2?family=Poppins&display=swap');
+
+[vs-theme='dark'] {
+  --vs-theme-bg: #18191c;
+  --vs-theme-color: #fff;
+  --vs-theme-layout: #1e2023;
+  --vs-theme-bg2: #141417;
+  --vs-theme-code: #141417;
+  --vs-theme-code2: #161619;
 }
 
-#nav {
-  padding: 30px;
+body {
+  background-color: #18191c;
+  color: #fff;
+  margin: 0;
+  font-family: 'Poppins', sans-serif;
+}
 
-  a {
-    font-weight: bold;
-    color: #2c3e50;
+html::-webkit-scrollbar {
+  width: 10px;
+}
 
-    &.router-link-exact-active {
-      color: #42b983;
-    }
-  }
+html::-webkit-scrollbar-track {
+  background-color: #18191c;
+}
+
+html::-webkit-scrollbar-thumb {
+  background: #4e4e4e;
+  border-radius: 5px;
+}
+
+.page {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 20px;
+}
+
+.container {
+  width: 85vw;
+  padding: 0 20px 0 20px;
+  border-radius: 5px 20px 20px 20px;
+  background-color: var(--vs-theme-layout);
 }
 </style>
