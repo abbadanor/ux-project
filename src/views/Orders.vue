@@ -81,6 +81,10 @@ export default {
 .orders {
   .container {
     padding-bottom: 10px;
+    max-width: 750px;
+  }
+  .vs-alert {
+    margin-bottom: 20px;
   }
 }
 </style>

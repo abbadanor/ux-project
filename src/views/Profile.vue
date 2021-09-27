@@ -22,34 +22,50 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex';
+import { mapGetters, mapMutations } from 'vuex';
 import axios from 'axios';
 
 export default {
   name: 'Profile',
   data() {
     return {
-      name: this.user.name,
-      avatar: this.user.avatar,
-      password: this.user.password,
+      name: '',
+      avatar: '',
+      password: '',
     };
   },
   computed: {
     ...mapGetters(['user']),
   },
+  mounted() {
+    this.name = this.user.name;
+    this.avatar = this.user.avatar;
+    this.password = this.user.password;
+  },
   methods: {
     async changeProfile() {
-      let patch = {
-        name: this.name,
-        avatar: this.avatar,
-        password: this.password,
-      };
+      let put = this.user;
+      put.name = this.name;
+      put.avatar = this.avatar;
+      put.password = this.password;
+
       try {
-        await axios.patch('http://localhost:3000/customers/3', patch);
+        await axios.put(`http://localhost:3000/customers/${this.user.id}`, put);
+        this.setUser(put);
+        this.notifyProfile();
       } catch (error) {
         console.log(error);
       }
     },
+    notifyProfile() {
+      this.$vs.notification({
+        color: 'success',
+        position: 'bottom-right',
+        title: 'Profile changed',
+        text: 'Your profile information was successfully changed',
+      });
+    },
+    ...mapMutations(['setUser']),
   },
 };
 </script>

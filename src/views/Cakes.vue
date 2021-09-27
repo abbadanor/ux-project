@@ -8,7 +8,10 @@
         :quantity="cake.quantity ? cake.quantity : 0"
         @incrementQuantity="incrementQuantity"
         @decrementQuantity="decrementQuantity"
-        @addItemToCart="addItemToCart"
+        @addItemToCart="
+          addItemToCart;
+          notifyCart(cake.title, cake.quantity);
+        "
       ></cake-card>
     </div>
   </div>
@@ -70,6 +73,14 @@ export default {
     ...mapMutations({
       addItemToCart: 'addToCart',
     }),
+    notifyCart(title, quantity) {
+      this.$vs.notification({
+        color: 'success',
+        position: 'bottom-right',
+        title: 'Item added',
+        text: quantity + ' of ' + title + ' was added to your shopping cart!',
+      });
+    },
   },
 };
 </script>

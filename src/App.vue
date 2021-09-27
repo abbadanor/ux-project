@@ -1,17 +1,17 @@
 <template>
-  <div class="app" vs-theme="dark">
-    <Navbar></Navbar>
+  <div class="app">
+    <Jude></Jude>
     <router-view />
   </div>
 </template>
 
 <script>
-import Navbar from '@/components/Navbar.vue';
+import Jude from '@/components/Jude.vue';
 
 export default {
   name: 'App',
   components: {
-    Navbar,
+    Jude,
   },
 };
 </script>
@@ -29,7 +29,7 @@ export default {
 }
 
 body {
-  background-color: #18191c;
+  background-color: #6691a4;
   color: #fff;
   margin: 0;
   font-family: 'Poppins', sans-serif;

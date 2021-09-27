@@ -112,8 +112,8 @@ export default {
       loginDialogOpen: false,
       createAccountDialogOpen: false,
       forgotPasswordDialogOpen: false,
-      email: 'Jaqueline.Brakus@hotmail.com',
-      password: 'NaYmtLbAXEdD8z8',
+      email: 'Afton_Champlin@gmail.com',
+      password: 'l5zckkComJGllkn',
     };
   },
   computed: {
