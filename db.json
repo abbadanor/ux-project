@@ -203,11 +203,12 @@
     },
     {
       "id": 3,
-      "name": "Ed Ebert IV",
+      "name": "Adam",
       "email": "Jaqueline.Brakus@hotmail.com",
-      "password": "NaYmtLbAXEdD8z8",
+      "password": "qwerty",
       "timestamp": "2021-05-04T13:01:56.783Z",
-      "avatar": "https://cdn.fakercloud.com/avatars/ffbel_128.jpg"
+      "avatar": "https://cdn.fakercloud.com/avatars/lisovsky_128.jpg",
+      "patch": ""
     },
     {
       "id": 4,
@@ -1338,6 +1339,22 @@
       "totalPrice": 37,
       "timestamp": "2021-05-04T20:14:58.412Z",
       "id": 51
+    },
+    {
+      "customerId": 9,
+      "cakes": [
+        {
+          "cakeId": 4,
+          "quantity": 2
+        },
+        {
+          "cakeId": 1,
+          "quantity": 7
+        }
+      ],
+      "totalPrice": 4,
+      "timestamp": "2021-05-04T20:14:58.412Z",
+      "id": 52
     }
   ]
 }

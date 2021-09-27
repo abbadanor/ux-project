@@ -5,15 +5,15 @@
         <img :src="user.avatar" alt="" />
       </vs-avatar>
 
-      <vs-input :value="user.name" placeholder="Name">
+      <vs-input v-model="name" placeholder="Name">
         <template #message-danger> Required </template>
       </vs-input>
 
-      <vs-input :value="user.avatar" placeholder="Image URL">
+      <vs-input v-model="avatar" placeholder="Image URL">
         <template #message-danger> Required </template>
       </vs-input>
 
-      <vs-input type="password" placeholder="Password">
+      <vs-input v-model="password" placeholder="Password">
         <template #message-warn> Insecure password </template>
       </vs-input>
       <vs-button block @click="changeProfile()">Change</vs-button>
@@ -23,15 +23,32 @@
 
 <script>
 import { mapGetters } from 'vuex';
+import axios from 'axios';
 
 export default {
   name: 'Profile',
+  data() {
+    return {
+      name: this.user.name,
+      avatar: this.user.avatar,
+      password: this.user.password,
+    };
+  },
   computed: {
     ...mapGetters(['user']),
   },
   methods: {
     async changeProfile() {
-      // lägg till sen någon gång.
+      let patch = {
+        name: this.name,
+        avatar: this.avatar,
+        password: this.password,
+      };
+      try {
+        await axios.patch('http://localhost:3000/customers/3', patch);
+      } catch (error) {
+        console.log(error);
+      }
     },
   },
 };

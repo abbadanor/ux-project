@@ -50,28 +50,24 @@ export default {
     return {
       orders: null,
       selected: null,
+      cakeList: [],
     };
   },
+  created() {},
   computed: {
     ...mapGetters(['user']),
   },
   async mounted() {
     try {
       this.orders = await Axios.get(`http://localhost:3000/orders?customerId=${this.user.id}`);
+      this.cakeList = await Axios.get('http://localhost:3000/cakes');
     } catch (error) {
       console.log(error);
     }
   },
   methods: {
-    async getCakeById(id) {
-      try {
-        let cake = await Axios.get(`http://localhost:3000/cakes?id=${id}`);
-        console.log('Order: ' + cake.data[0].price);
-        return cake.data[0];
-      } catch (error) {
-        console.log('catched error1');
-        console.error(error);
-      }
+    getCakeById(id) {
+      return this.cakeList.data.find((cake) => cake.id === id);
     },
     timeToString: function (string) {
       let d = new Date(string);

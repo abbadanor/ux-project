@@ -44,7 +44,6 @@
           </template>
         </vs-input>
         <div class="flex">
-          <vs-checkbox>Remember me</vs-checkbox>
           <a href="#" @click="forgotPasswordDialogOpen = true">Forgot Password?</a>
         </div>
       </div>

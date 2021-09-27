@@ -64,7 +64,7 @@ export default {
         totalPrice: 4,
         timestamp: '2021-05-04T20:14:58.412Z',
       };
-      await Axios.post('localhost:3000/orders/', post);
+      await Axios.post('http://localhost:3000/orders', post);
     },
   },
 };
