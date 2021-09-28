@@ -9,7 +9,7 @@
         @incrementQuantity="incrementQuantity"
         @decrementQuantity="decrementQuantity"
         @addItemToCart="
-          addItemToCart;
+          addItemToCart(cake);
           notifyCart(cake.title, cake.quantity);
         "
       ></cake-card>

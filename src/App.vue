@@ -1,17 +1,17 @@
 <template>
   <div class="app">
-    <Jude></Jude>
+    <Navbar></Navbar>
     <router-view />
   </div>
 </template>
 
 <script>
-import Jude from '@/components/Jude.vue';
+import Navbar from '@/components/Navbar.vue';
 
 export default {
   name: 'App',
   components: {
-    Jude,
+    Navbar,
   },
 };
 </script>
@@ -19,13 +19,12 @@ export default {
 <style lang="scss">
 @import url('https://fonts.googleapis.com/css2?family=Poppins&display=swap');
 
-[vs-theme='dark'] {
-  --vs-theme-bg: #18191c;
-  --vs-theme-color: #fff;
-  --vs-theme-layout: #1e2023;
-  --vs-theme-bg2: #141417;
-  --vs-theme-code: #141417;
-  --vs-theme-code2: #161619;
+:root {
+  --vs-primary: 102, 145, 164 !important;
+  --vs-success: 23, 201, 100;
+  --vs-danger: 242, 19, 93;
+  --vs-warn: 254, 130, 0;
+  --vs-dark: 52, 38, 65 !important;
 }
 
 body {

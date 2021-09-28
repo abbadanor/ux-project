@@ -6,17 +6,17 @@
       </vs-avatar>
 
       <vs-input v-model="name" placeholder="Name">
-        <template #message-danger> Required </template>
+        <template v-if="!name" #message-danger> Required </template>
       </vs-input>
 
       <vs-input v-model="avatar" placeholder="Image URL">
-        <template #message-danger> Required </template>
+        <template v-if="!avatar" #message-danger> Required </template>
       </vs-input>
 
-      <vs-input v-model="password" placeholder="Password">
-        <template #message-warn> Insecure password </template>
+      <vs-input v-model="password" type="password" placeholder="Password">
+        <template v-if="password.length < 8" #message-warn> Insecure password </template>
       </vs-input>
-      <vs-button block @click="changeProfile()">Change</vs-button>
+      <vs-button dark block @click="changeProfile()">Change</vs-button>
     </div>
   </div>
 </template>
@@ -73,6 +73,7 @@ export default {
 <style lang="scss">
 .profile {
   .container {
+    background-color: #fff;
     padding: 20px;
     max-width: 750px;
   }

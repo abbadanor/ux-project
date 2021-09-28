@@ -2,7 +2,7 @@
   <div class="cake-card">
     <vs-card>
       <template #title>
-        <h3>{{ cake.title }}</h3>
+        <h3 @click="$router.push(`/cake/${cake.id}`)">{{ cake.title }}</h3>
       </template>
       <template #img>
         <img @click="$router.push(`/cake/${cake.id}`)" :src="cake.image" alt="" />
@@ -11,7 +11,7 @@
         </div>
       </template>
       <template #text>
-        <p>{{ cake.previewDescription }}</p>
+        <p @click="$router.push(`/cake/${cake.id}`)">{{ cake.previewDescription }}</p>
       </template>
       <template #interactions>
         <vs-button-group>

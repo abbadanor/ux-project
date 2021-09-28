@@ -81,10 +81,15 @@ export default {
 .orders {
   .container {
     padding-bottom: 10px;
+    background-color: #fff;
     max-width: 750px;
   }
   .vs-alert {
     margin-bottom: 20px;
   }
+  .selected {
+    background: #342641 !important;
+  }
+  color: #000;
 }
 </style>

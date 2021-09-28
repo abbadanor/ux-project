@@ -54,11 +54,11 @@ export default {
   }
 
   .vs-card__group-cards::-webkit-scrollbar-track {
-    background-color: #18191c;
+    background-color: #6691a4;
   }
 
   .vs-card__group-cards::-webkit-scrollbar-thumb {
-    background: #4e4e4e;
+    background: #fff;
     border-radius: 7px;
   }
 }

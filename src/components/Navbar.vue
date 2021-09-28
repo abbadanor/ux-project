@@ -1,35 +1,26 @@
 <template>
   <div class="navbar">
-    <vs-navbar not-line target-scroll="#padding-scroll-content" padding-scroll v-model="active">
-      <template #left>
-        <img src="../assets/logo.png" alt="" @click="$router.push('/')" />
-      </template>
-      <vs-navbar-item :active="$route.path == '/'" to="/"> Home </vs-navbar-item>
-      <vs-navbar-item :active="$route.path == '/cakes'" to="/cakes"> Cakes </vs-navbar-item>
-      <vs-navbar-item :active="$route.path == '/about'" to="/about"> About us </vs-navbar-item>
-      <template #right>
-        <vs-button circle v-if="Object.entries(user).length === 0" @click="loginDialogOpen = true">Log in</vs-button>
-        <vs-button icon circle to="/cart">
-          <i class="bx bx-cart"></i>
-        </vs-button>
-        <vs-navbar-group v-if="Object.entries(user).length !== 0">
-          <vs-button circle icon gradient color="primary">
-            <i class="bx bx-user"></i>
-          </vs-button>
-          <template #items>
-            <vs-navbar-item to="/orders" :active="$route.path == '/orders'"> Orders </vs-navbar-item>
-            <vs-navbar-item to="/profile" :active="$route.path == '/profile'"> Profile </vs-navbar-item>
-            <vs-navbar-item @click="logout()"> Log out </vs-navbar-item>
-          </template>
-        </vs-navbar-group>
-      </template>
-    </vs-navbar>
-    <div id="padding-scroll-content" class="square">
-      <div class="child">child 1</div>
-      <div class="child">child 2</div>
-      <div class="child">child 3</div>
+    <img src="../assets/navbarLogo.png" id="navbarLogo" @click="$router.push('/')" />
+    <div id="mainButtons">
+      <button id="navButton" class="nav-button" @click="$router.push('/')">Home</button>
+      <button id="navButton" class="nav-button" @click="$router.push('/cakes')">Cakes</button>
+      <button id="navButton" class="nav-button" @click="$router.push('/about')">About us</button>
     </div>
-    <vs-dialog id="dialog-1" vs-theme="dark" v-model="loginDialogOpen">
+    <div id="loginButtons">
+      <button id="navButton" v-if="Object.entries(user).length === 0" @click="loginDialogOpen = true" flat>Log in</button>
+      <!-- If user is not logged in, show login button -->
+      <div v-else>
+        <button id="navButton" @click="$router.push('/orders')">Orders</button>
+        <button id="navButton" @click="$router.push('/profile')" class="profileButton">Profile</button>
+        <button id="navButton" @click="logout()">Log out</button>
+      </div>
+      <hr />
+      <button id="cartButton" @click="$router.push('/cart')" circle icon gradient color="primary">
+        <i class="bx bx-cart"></i>
+      </button>
+    </div>
+
+    <vs-dialog id="dialog-1" v-model="loginDialogOpen">
       <template #header>
         <h4 class="not-margin">Log in to your account</h4>
       </template>
@@ -59,16 +50,21 @@
         </div>
       </template>
     </vs-dialog>
-    <vs-dialog class="dialog-2" vs-theme="dark" v-model="createAccountDialogOpen">
+    <vs-dialog class="dialog-2" v-model="createAccountDialogOpen">
       <template #header>
         <h4 class="not-margin">Create account</h4>
       </template>
 
       <div class="con-form">
-        <vs-input>
+        <vs-input v-model="createUser.email" placeholder="Email">
           <template #icon> @ </template>
         </vs-input>
-        <vs-input type="password">
+        <vs-input v-model="createUser.name" placeholder="Full name">
+          <template #icon>
+            <i class="bx bx-rename"></i>
+          </template>
+        </vs-input>
+        <vs-input v-model="createUser.password" type="password" placeholder="Password">
           <template #icon>
             <i class="bx bxs-lock"></i>
           </template>
@@ -77,11 +73,11 @@
 
       <template #footer>
         <div class="footer-dialog">
-          <vs-button block> Create account </vs-button>
+          <vs-button @click="createAccount(createUser.email, createUser.name, createUser.password)" block> Create account </vs-button>
         </div>
       </template>
     </vs-dialog>
-    <vs-dialog class="dialog-2" vs-theme="dark" v-model="forgotPasswordDialogOpen">
+    <vs-dialog class="dialog-2" v-model="forgotPasswordDialogOpen">
       <template #header>
         <h4 class="not-margin">Reset your password</h4>
       </template>
@@ -102,18 +98,23 @@
 </template>
 
 <script>
+import axios from 'axios';
 import { mapGetters, mapActions, mapMutations } from 'vuex';
 
 export default {
-  name: 'Navbar',
+  name: 'Navbaren',
   data() {
     return {
-      active: 'home',
       loginDialogOpen: false,
       createAccountDialogOpen: false,
       forgotPasswordDialogOpen: false,
-      email: 'Afton_Champlin@gmail.com',
-      password: 'l5zckkComJGllkn',
+      email: 'Laverne.Harvey@yahoo.com',
+      password: 'bHO_3U3aPM_B38Q',
+      createUser: {
+        name: '',
+        email: '',
+        password: '',
+      },
     };
   },
   computed: {
@@ -134,9 +135,49 @@ export default {
         opacity: 1,
         color: '#fff',
       });
-      await this.setUser({ email, password });
+      try {
+        await this.setUser({ email, password });
+      } catch (error) {
+        console.error(error);
+        this.notifyError('Something went wrong', 'You could not be logged in');
+      }
       loading.close();
       this.loginDialogOpen = false;
+    },
+    async createAccount(email, name, password) {
+      if (!email.includes('@')) {
+        this.notifyError('Invalid Email', 'You need to input a valid email adress');
+        return;
+      } else if (password.length < 8) {
+        this.notifyError('Password too short', 'You password must be at least 8 characters long');
+        return;
+      } else {
+        let timeElapsed = Date.now();
+        let timestamp = new Date(timeElapsed);
+        let post = {
+          name: name,
+          email: email,
+          password: password,
+          timestamp: timestamp.toISOString(),
+          avatar: 'https://cdn.fakercloud.com/avatars/mds_128.jpg',
+        };
+        try {
+          await axios.post('http://localhost:3000/customers', post);
+        } catch (error) {
+          console.error(error);
+          this.notifyError('Something went wrong', 'Your account could not be created');
+        }
+        this.login(email, password);
+        this.createAccountDialogOpen = false;
+      }
+    },
+    notifyError(title, text) {
+      this.$vs.notification({
+        color: 'danger',
+        position: 'top-right',
+        title: title,
+        text: text,
+      });
     },
   },
 };
@@ -144,19 +185,71 @@ export default {
 
 <style lang="scss">
 .navbar {
-  img {
-    max-height: 40px;
+  display: flex;
+  flex-direction: row;
+  z-index: 1;
+  height: 6.7vw;
+  width: 70vw;
+  margin-left: 15vw;
+  transition: 200ms;
+  #mainButtons {
+    margin-left: 2vw;
+    text-align: center;
   }
-  .vs-navbar__group__items {
-    left: -120px !important;
-    border-radius: 18px 5px 18px 18px !important;
+  #navButton {
+    background-color: transparent;
+    border: none;
+    font-family: 'Poppins';
+    font-weight: bold;
+    color: #fff3e1;
+    font-size: 1.15vw;
+    letter-spacing: 0.05vw;
+    margin: 1vw;
+    display: inline-block;
+    transform-origin: center;
   }
-
-  .vs-navbar__group__item {
-    padding: 0 !important;
+  #navButton:after {
+    display: block;
+    content: '';
+    border-bottom: solid 3px #fff3e1;
+    transform: scaleX(0);
+    transition: transform 250ms ease-in-out;
+  }
+  #navButton:hover:after {
+    transform: scaleX(1);
+  }
+  .nav-button {
+    padding-top: 1.5vw;
+  }
+  #loginButtons {
+    align-items: center;
+    flex-direction: row;
+    display: flex;
+    right: 0;
+    margin-left: auto;
+  }
+  #loginButtons hr {
+    background-color: #fff3e1;
+    height: 2.2vw;
+    width: 0.1vw;
+    border: none;
+  }
+  #cartButton {
+    background-color: transparent;
+    color: #fff3e1;
+    border: none;
+    font-size: 2.5vw;
+    margin: 1vw;
+  }
+  #profileLogo {
+    cursor: default;
+    font-size: 1.5vw;
+    margin-right: 0;
+    background-color: transparent;
+    color: #fff3e1;
+    border: none;
   }
 }
-
 .vs-dialog {
   .con-form {
     width: 100%;
@@ -195,18 +288,10 @@ export default {
   a {
     text-decoration: none;
     opacity: 0.7;
-    color: #fff;
+    color: #000;
     &:hover {
       opacity: 1;
     }
   }
-}
-
-#dialog-1 {
-  z-index: 1;
-}
-
-.dialog-2 {
-  z-index: 2;
 }
 </style>
